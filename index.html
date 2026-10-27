@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CPS | Centro de Postura e Saúde - Ortopedia, Fisioterapia & Osteopatia Avançada</title>
-  <meta name="description" content="Centro integrado de cuidados musculoesqueléticos, alívio de dores na coluna, reabilitação articular e osteopatia pediátrica de excelência. Atendimento no Centro de Postura e Saúde (CPS).">
+  <title>CPS - Centro de Postura e Saúde | Fisioterapia & Osteopatia</title>
+  <meta name="description" content="Centro de Postura e Saúde (CPS) - Especialistas em Fisioterapia, Osteopatia Adulta e Pediátrica, Conceito Mulligan e Reabilitação de Dores na Coluna.">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230284c7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 12h-4l-3 9L9 3l-3 9H2'/></svg>">
+  <link rel="icon" type="image/png" href="assets/logo-cps.png">
 
   <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -24,17 +24,13 @@
             sans: ['"Plus Jakarta Sans"', 'sans-serif'],
           },
           colors: {
-            brand: {
-              navy: '#0b1d3a',     /* Deep Clinical Navy (CREB style) */
-              dark: '#11294d',
-              royal: '#0052cc',    /* Medical Royal Blue */
-              blue: '#0284c7',     /* Ocean Sky Blue */
-              light: '#f0f6ff',
-              cyan: '#06b6d4',
-            },
-            accent: {
-              emerald: '#10b981',
-              green: '#059669',
+            cps: {
+              navy: '#0b2341',     /* Navy dark do logo CPS */
+              blue: '#163b66',
+              cyan: '#00a8cc',     /* Ciano do logo CPS */
+              cyanLight: '#e0f7fa',
+              teal: '#0d6978',
+              tealDark: '#084b56',
             }
           }
         }
@@ -49,192 +45,199 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    /* Gradient Masks & Glassmorphism inspired by CREB and Fisioclinic */
-    .creb-gradient {
-      background: linear-gradient(135deg, #0b1d3a 0%, #11294d 60%, #0052cc 100%);
+    /* Slider Animations (Ken Burns Zoom & Fade - Fisioclinic Style) */
+    .slide-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.2s ease-in-out, transform 6s ease-out;
+      transform: scale(1);
     }
-    .card-hover {
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    .slide-bg.active {
+      opacity: 1;
+      transform: scale(1.06);
     }
-    .card-hover:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 30px -10px rgba(11, 29, 58, 0.12);
+
+    /* Asymmetric rounded collage capsules (Fisioclinic image style) */
+    .capsule-top {
+      border-radius: 90px 90px 16px 90px;
+    }
+    .capsule-center {
+      border-radius: 16px 90px 90px 90px;
+    }
+    .capsule-bottom {
+      border-radius: 90px 16px 90px 90px;
+    }
+
+    /* Pill button style from Fisioclinic */
+    .btn-fisioclinic {
+      background: linear-gradient(135deg, #0d6978 0%, #084b56 100%);
+      box-shadow: 0 4px 14px rgba(8, 75, 86, 0.35);
+    }
+    .btn-fisioclinic:hover {
+      background: linear-gradient(135deg, #0f7a8c 0%, #0a5966 100%);
+      transform: translateY(-2px);
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased font-sans selection:bg-brand-blue selection:text-white">
+<body class="bg-white text-slate-800 antialiased font-sans selection:bg-cps-cyan selection:text-white">
 
-  <!-- ================= 1. INSTITUTIONAL TOP BAR (CREB STYLE) ================= -->
-  <aside aria-label="Informações Institucionais" class="bg-brand-navy text-slate-300 text-xs py-2.5 px-4 border-b border-slate-800/80">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
+  <!-- ================= 1. HEADER LIMPO ESTILO FISIOCLINIC ================= -->
+  <header class="sticky top-0 z-50 bg-white/98 backdrop-blur-md border-b border-slate-100 shadow-sm transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
       
-      <div class="flex items-center flex-wrap justify-center gap-4 text-[11px] sm:text-xs">
-        <span class="flex items-center gap-1.5 text-white font-medium">
-          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-cyan"></i>
-          <span><strong>Unidade CPS:</strong> Centro de Postura e Saúde</span>
-        </span>
-        <span class="hidden sm:inline text-slate-600">•</span>
-        <span class="flex items-center gap-1.5">
-          <i data-lucide="clock" class="w-3.5 h-3.5 text-brand-cyan"></i>
-          <span>Seg a Sex: 08h às 19h | Sábados: Horário Agendado</span>
-        </span>
-      </div>
-
-      <div class="flex items-center gap-5 text-[11px] sm:text-xs font-semibold">
-        <span class="hidden lg:flex items-center gap-1 text-emerald-400">
-          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
-          <span>Emissão de Laudos para Reembolso</span>
-        </span>
-        <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 transition">
-          <i data-lucide="phone-call" class="w-3.5 h-3.5"></i>
-          <span>Central WhatsApp de Agendamentos</span>
-        </a>
-      </div>
-
-    </div>
-  </aside>
-
-  <!-- ================= 2. MAIN MEGA NAVBAR ================= -->
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-sm transition-all">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      
-      <!-- Logo: CPS - Centro de Postura e Saúde -->
-      <a href="#" class="flex items-center gap-3.5 group">
-        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-navy to-brand-royal flex items-center justify-center text-white font-black text-2xl shadow-md group-hover:scale-105 transition-transform">
-          <span class="tracking-tighter">CPS</span>
-        </div>
-        <div>
-          <span class="block text-xl font-extrabold tracking-tight text-brand-navy leading-tight">
-            Centro de Postura e Saúde
-          </span>
-          <span class="block text-[11px] font-bold uppercase tracking-wider text-brand-blue">
-            Ortopedia • Fisioterapia • Osteopatia Avançada
-          </span>
-        </div>
+      <!-- Official CPS Logo -->
+      <a href="#" class="flex items-center group">
+        <img 
+          src="assets/logo-cps.png" 
+          alt="CPS - Centro de Postura e Saúde" 
+          class="h-12 sm:h-14 w-auto object-contain group-hover:opacity-95 transition"
+        >
       </a>
 
-      <!-- Desktop Nav Items -->
-      <nav class="hidden xl:flex items-center gap-7 text-[13px] font-bold text-slate-700">
-        <a href="#especialidades" class="hover:text-brand-royal transition py-2">Especialidades</a>
-        <a href="#tratamentos" class="hover:text-brand-royal transition py-2">Tratamentos & Tecnologia</a>
-        <a href="#corpo-clinico" class="hover:text-brand-royal transition py-2">Corpo Clínico</a>
-        <a href="#reembolso" class="hover:text-brand-royal transition py-2">Convênios & Reembolso</a>
-        <a href="#unidade" class="hover:text-brand-royal transition py-2">A Unidade</a>
+      <!-- Desktop Navigation Menu (Fisioclinic Style) -->
+      <nav class="hidden md:flex items-center gap-8 text-[15px] font-semibold text-slate-700">
+        <a href="#home" class="hover:text-cps-cyan transition">Home</a>
+        <a href="#nossa-clinica" class="hover:text-cps-cyan transition">Nossa Clínica</a>
+        <a href="#servicos" class="hover:text-cps-cyan transition">Serviços</a>
+        <a href="#corpo-clinico" class="hover:text-cps-cyan transition">Corpo Clínico</a>
+        <a href="#contato" class="hover:text-cps-cyan transition">Contato</a>
       </nav>
 
-      <!-- CTA Button (Portal Style) -->
+      <!-- CTA Button -->
       <div class="flex items-center gap-3">
-        <a href="#agendamento-online" class="hidden sm:inline-flex items-center gap-2 bg-brand-royal hover:bg-brand-navy text-white font-extrabold text-xs uppercase tracking-wider px-5 py-3 rounded-xl shadow-lg shadow-brand-royal/20 transition-all transform hover:-translate-y-0.5">
-          <i data-lucide="calendar" class="w-4 h-4"></i>
-          <span>Agendamento Online</span>
+        <a href="#agendamento" class="hidden sm:inline-flex items-center gap-2 btn-fisioclinic text-white font-bold text-sm px-6 py-3 rounded-full transition-all">
+          <span>Agende Conosco</span>
         </a>
-        <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition sm:hidden">
-          <i data-lucide="message-circle" class="w-5 h-5"></i>
+        <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-full bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition sm:hidden">
+          <i data-lucide="phone" class="w-5 h-5"></i>
         </a>
       </div>
 
     </div>
   </header>
 
-  <!-- ================= 3. HERO SECTION (CREB / FISIOCLINIC STYLE) ================= -->
-  <section class="relative creb-gradient text-white pt-16 pb-24 lg:pt-20 lg:pb-32 overflow-hidden">
+  <!-- ================= 2. HERO SLIDER COM IMAGENS EM MOVIMENTO (FISIOCLINIC) ================= -->
+  <section id="home" class="relative h-[550px] sm:h-[620px] lg:h-[680px] w-full overflow-hidden flex items-center justify-center text-center">
     
-    <!-- Background Tech Grid Pattern -->
-    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:24px_24px]"></div>
+    <!-- Slideshow Background Images -->
+    <div id="slide-0" class="slide-bg active" style="background-image: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1920&q=80');"></div>
+    <div id="slide-1" class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1920&q=80');"></div>
+    <div id="slide-2" class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1581056771107-24ca5f033842?auto=format&fit=crop&w=1920&q=80');"></div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    <!-- Soft Overlay Mask -->
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-slate-950/50 to-slate-950/65"></div>
+
+    <!-- Hero Content Overlay (Exact Fisioclinic Format) -->
+    <div class="relative z-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-white space-y-6">
+      
+      <span class="inline-block px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-cps-cyanLight text-xs sm:text-sm font-bold uppercase tracking-widest border border-white/20">
+        Centro de Postura e Saúde
+      </span>
+
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white drop-shadow-md">
+        CPS - Fisioterapia e Osteopatia Especializada
+      </h1>
+
+      <p class="text-base sm:text-lg text-slate-100 max-w-2xl mx-auto font-medium drop-shadow-sm leading-relaxed">
+        Tratamentos de excelência para alívio de dores na coluna, reabilitação biomecânica e o cuidado delicado da osteopatia pediátrica.
+      </p>
+
+      <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#agendamento" class="btn-fisioclinic text-white font-black text-base px-10 py-4 rounded-full transition-all tracking-wide">
+          Agende conosco
+        </a>
+        <a href="#nossa-clinica" class="bg-white/90 hover:bg-white text-slate-900 font-bold text-base px-8 py-4 rounded-full transition-all shadow-lg">
+          Conheça nossa clínica
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Slider Dots Controls -->
+    <div class="absolute bottom-8 z-20 flex items-center justify-center gap-3">
+      <button onclick="setSlide(0)" id="dot-0" class="w-3 h-3 rounded-full bg-white transition-all scale-125" aria-label="Slide 1"></button>
+      <button onclick="setSlide(1)" id="dot-1" class="w-3 h-3 rounded-full bg-white/50 hover:bg-white transition-all" aria-label="Slide 2"></button>
+      <button onclick="setSlide(2)" id="dot-2" class="w-3 h-3 rounded-full bg-white/50 hover:bg-white transition-all" aria-label="Slide 3"></button>
+    </div>
+
+  </section>
+
+  <!-- ================= 3. SEÇÃO NOSSA CLÍNICA (ESTILO EXATO FISIOCLINIC) ================= -->
+  <section id="nossa-clinica" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-14 items-center">
         
-        <!-- Left Banner Headline -->
-        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+        <!-- Left: Text with Teal Underline (Fisioclinic Signature) -->
+        <div class="lg:col-span-7 space-y-6">
           
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-brand-cyan text-xs font-bold uppercase tracking-wider">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-            <span>Centro Especializado em Cuidados Musculoesqueléticos</span>
+          <div>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-cps-cyan tracking-tight">
+              Nossa Clínica
+            </h2>
+            <div class="w-24 h-1 bg-cps-cyan mt-2 rounded-full"></div>
           </div>
 
-          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.15]">
-            Referência no Tratamento da Dor, <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-blue-200">Reabilitação Ortopédica</span> e Osteopatia Avançada.
-          </h1>
-
-          <p class="text-base sm:text-lg text-slate-200 max-w-2xl leading-relaxed">
-            Diagnóstico minucioso da causa biomecânica da dor, técnicas manuais internacionais indolores e atendimento especializado tanto para a coluna de adultos quanto para o conforto e alívio do bebê.
+          <p class="text-slate-600 text-base leading-relaxed">
+            Dedicados a tratar patologias osteomusculares e neuromusculares através de técnicas modernas e consagradas como a <strong>Osteopatia Clínica</strong>, o <strong>Método Mulligan Internacional</strong>, <strong>Reabilitação Articular</strong> e <strong>Liberação Miofascial</strong>.
           </p>
 
-          <!-- Key Authority Badges -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 text-xs font-bold text-slate-200">
-            <div class="flex items-center gap-2 bg-white/5 border border-white/10 p-2.5 rounded-xl backdrop-blur-sm">
-              <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0"></i>
-              <span>Sem Cirurgias ou Remédios</span>
-            </div>
-            <div class="flex items-center gap-2 bg-white/5 border border-white/10 p-2.5 rounded-xl backdrop-blur-sm">
-              <i data-lucide="award" class="w-4 h-4 text-brand-cyan shrink-0"></i>
-              <span>Conceito Mulligan</span>
-            </div>
-            <div class="flex items-center gap-2 bg-white/5 border border-white/10 p-2.5 rounded-xl backdrop-blur-sm col-span-2 sm:col-span-1">
-              <i data-lucide="receipt" class="w-4 h-4 text-emerald-400 shrink-0"></i>
-              <span>Recibo p/ Reembolso</span>
-            </div>
-          </div>
+          <p class="text-slate-600 text-base leading-relaxed">
+            Oferecemos o internacionalmente certificado <strong>Conceito Mulligan de Terapia Manual</strong>, que devolve o alinhamento das vértebras, articulações e ligamentos através de mobilizações ativas completamente indolores. Os resultados de alívio e ganho de amplitude de movimento são percebidos já na primeira consulta.
+          </p>
 
-          <!-- CTAs -->
-          <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-            <a href="#agendamento-online" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-brand-cyan hover:bg-cyan-400 text-brand-navy font-black text-sm uppercase tracking-wider px-8 py-4 rounded-xl shadow-xl shadow-cyan-500/20 transition transform hover:-translate-y-0.5">
-              <i data-lucide="calendar-plus" class="w-4 h-4"></i>
-              <span>Agendar Minha Consulta</span>
-            </a>
-            <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm px-6 py-4 rounded-xl transition shadow-lg shadow-emerald-700/30">
-              <i data-lucide="message-circle" class="w-4 h-4"></i>
-              <span>Falar na Central WhatsApp</span>
+          <p class="text-slate-600 text-base leading-relaxed">
+            Em <strong>pós-operatórios</strong> (como joelho e ligamento cruzado anterior) e lesões esportivas, os protocolos são realizados em estreita sintonia com o diagnóstico cinético-funcional para que o paciente retorne rapidamente e com total segurança à sua rotina ativa.
+          </p>
+
+          <p class="text-slate-600 text-base leading-relaxed">
+            Na área de <strong>Osteopatia Pediátrica</strong>, oferecemos um ambiente calmo e toques ultradelicados para recém-nascidos e bebês com cólicas intensas, refluxo gastroesofágico, torcicolo congênito e assimetrias cranianas (plagiocefalia), promovendo sono tranquilo e qualidade de vida para toda a família.
+          </p>
+
+          <div class="pt-2">
+            <a href="#agendamento" class="inline-flex items-center gap-2 text-sm font-bold text-cps-teal hover:text-cps-cyan transition">
+              <span>Solicitar atendimento individualizado</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </a>
           </div>
 
         </div>
 
-        <!-- Right Visual Showcase (CREB Card Style) -->
-        <div class="lg:col-span-5">
-          <div class="bg-white/10 backdrop-blur-md border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6 text-white">
+        <!-- Right: Creative Rounded Capsule Collage (Identical to Fisioclinic Screenshot) -->
+        <div class="lg:col-span-5 relative">
+          <div class="grid grid-cols-1 gap-6 max-w-md mx-auto">
             
-            <div class="flex items-center justify-between border-b border-white/15 pb-4">
-              <div>
-                <span class="text-xs uppercase tracking-wider text-brand-cyan font-bold block">Responsável Técnico</span>
-                <p class="text-lg font-black">Dr. Israel Silva</p>
-                <p class="text-xs text-slate-300">Fisioterapeuta & Osteopata</p>
-              </div>
-              <span class="px-3 py-1 bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 rounded-full text-[11px] font-bold">
-                Agenda Aberta
-              </span>
-            </div>
-
-            <!-- Authentic Photo Preview -->
-            <div class="relative rounded-2xl overflow-hidden border border-white/20 shadow-inner aspect-[4/3] bg-slate-900">
+            <!-- Capsule 1 (Top) -->
+            <div class="relative overflow-hidden capsule-top shadow-xl h-52 bg-slate-100 border-2 border-slate-50">
               <img 
-                src="assets/mulligan-certificate.jpg" 
-                alt="Dr. Israel Silva - Formação Internacional no Conceito Mulligan" 
+                src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=800&q=80" 
+                alt="Consultório Climatizado CPS" 
                 class="w-full h-full object-cover"
               >
-              <div class="absolute inset-0 bg-gradient-to-t from-brand-navy/90 via-transparent to-transparent flex items-end p-4">
-                <p class="text-xs text-slate-100 font-semibold flex items-center gap-1.5">
-                  <i data-lucide="award" class="w-4 h-4 text-brand-cyan"></i>
-                  Certificação Internacional Mulligan Concept
-                </p>
-              </div>
             </div>
 
-            <div class="space-y-2 text-xs text-slate-200">
-              <div class="flex items-center gap-2">
-                <i data-lucide="check" class="w-4 h-4 text-brand-cyan"></i>
-                <span>Atendimento individual de 50 a 60 minutos</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <i data-lucide="check" class="w-4 h-4 text-brand-cyan"></i>
-                <span>Espaço acolhedor e climatizado no CPS</span>
-              </div>
+            <!-- Capsule 2 (Center) -->
+            <div class="relative overflow-hidden capsule-center shadow-xl h-52 bg-slate-100 border-2 border-slate-50 ml-10">
+              <img 
+                src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80" 
+                alt="Reabilitação e Terapia Manual" 
+                class="w-full h-full object-cover"
+              >
             </div>
 
-            <a href="#agendamento-online" class="block w-full text-center bg-white hover:bg-slate-100 text-brand-navy font-black py-3 rounded-xl transition text-xs uppercase tracking-wider">
-              Solicitar Horário no CPS
-            </a>
+            <!-- Capsule 3 (Bottom) -->
+            <div class="relative overflow-hidden capsule-bottom shadow-xl h-52 bg-slate-100 border-2 border-slate-50">
+              <img 
+                src="assets/mulligan-certificate.jpg" 
+                alt="Certificação Internacional Mulligan Concept" 
+                class="w-full h-full object-cover"
+              >
+              <div class="absolute bottom-2 left-4 right-4 bg-white/95 rounded-xl py-1.5 px-3 text-[11px] font-bold text-cps-navy shadow-sm">
+                Certificação Internacional Mulligan
+              </div>
+            </div>
 
           </div>
         </div>
@@ -243,237 +246,126 @@
     </div>
   </section>
 
-  <!-- ================= 4. CARDS DE ACESSO RÁPIDO (MARCA REGISTRADA DO CREB) ================= -->
-  <section class="relative -mt-10 z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      
-      <!-- Card 1 -->
-      <a href="#especialidades" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-lg card-hover flex flex-col justify-between group">
-        <div>
-          <div class="w-12 h-12 rounded-xl bg-blue-50 text-brand-royal flex items-center justify-center mb-4 group-hover:bg-brand-royal group-hover:text-white transition">
-            <i data-lucide="activity" class="w-6 h-6"></i>
-          </div>
-          <h3 class="text-base font-extrabold text-slate-900 mb-1">Coluna & Hérnia</h3>
-          <p class="text-xs text-slate-500 leading-relaxed">
-            Tratamento de lombalgia, ciático, hérnias discais e torcicolo com alívio mecânico.
-          </p>
-        </div>
-        <span class="text-xs font-bold text-brand-royal flex items-center gap-1 mt-4 group-hover:translate-x-1 transition-transform">
-          Ver detalhes <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-        </span>
-      </a>
-
-      <!-- Card 2 -->
-      <a href="#especialidades" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-lg card-hover flex flex-col justify-between group">
-        <div>
-          <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center mb-4 group-hover:bg-teal-700 group-hover:text-white transition">
-            <i data-lucide="heart" class="w-6 h-6"></i>
-          </div>
-          <h3 class="text-base font-extrabold text-slate-900 mb-1">Osteopatia Pediátrica</h3>
-          <p class="text-xs text-slate-500 leading-relaxed">
-            Cuidado suave para recém-nascidos: alívio de cólicas, refluxo oculto e plagiocefalia.
-          </p>
-        </div>
-        <span class="text-xs font-bold text-teal-700 flex items-center gap-1 mt-4 group-hover:translate-x-1 transition-transform">
-          Ver detalhes <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-        </span>
-      </a>
-
-      <!-- Card 3 -->
-      <a href="#especialidades" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-lg card-hover flex flex-col justify-between group">
-        <div>
-          <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center mb-4 group-hover:bg-indigo-700 group-hover:text-white transition">
-            <i data-lucide="shield-check" class="w-6 h-6"></i>
-          </div>
-          <h3 class="text-base font-extrabold text-slate-900 mb-1">Reabilitação & Esporte</h3>
-          <p class="text-xs text-slate-500 leading-relaxed">
-            Pós-operatório de LCA, joelho, ombro, tendinites e retorno acelerado aos treinos.
-          </p>
-        </div>
-        <span class="text-xs font-bold text-indigo-700 flex items-center gap-1 mt-4 group-hover:translate-x-1 transition-transform">
-          Ver detalhes <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-        </span>
-      </a>
-
-      <!-- Card 4 -->
-      <a href="#reembolso" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-lg card-hover flex flex-col justify-between group">
-        <div>
-          <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-4 group-hover:bg-emerald-700 group-hover:text-white transition">
-            <i data-lucide="file-check-2" class="w-6 h-6"></i>
-          </div>
-          <h3 class="text-base font-extrabold text-slate-900 mb-1">Sistema de Reembolso</h3>
-          <p class="text-xs text-slate-500 leading-relaxed">
-            Como utilizar seu plano de saúde para ressarcimento das consultas particulares no CPS.
-          </p>
-        </div>
-        <span class="text-xs font-bold text-emerald-700 flex items-center gap-1 mt-4 group-hover:translate-x-1 transition-transform">
-          Entenda como funciona <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-        </span>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- ================= 5. ESPECIALIDADES CLÍNICAS (ESTILO CREB) ================= -->
-  <section id="especialidades" class="py-24 bg-slate-50">
+  <!-- ================= 4. SERVIÇOS & ESPECIALIDADES (ESTILO FISIOCLINIC) ================= -->
+  <section id="servicos" class="py-24 bg-slate-50 border-t border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
-        <span class="text-xs font-black tracking-widest text-brand-royal uppercase bg-blue-100/70 border border-blue-200 px-3.5 py-1.5 rounded-full inline-block">
-          Áreas de Atuação
-        </span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-navy tracking-tight">
-          Cuidado Especializado em Cada Etapa do Tratamento
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-cps-cyan tracking-tight">
+          Nossos Serviços
         </h2>
-        <p class="text-slate-600 text-base">
-          No Centro de Postura e Saúde, cada paciente passa por uma avaliação biomecânica individualizada para identificar a origem real do sintoma.
+        <div class="w-20 h-1 bg-cps-cyan mx-auto rounded-full"></div>
+        <p class="text-slate-600 text-base pt-2">
+          Abordagens terapêuticas modernas e personalizadas para restabelecer o equilíbrio e a mobilidade do seu corpo.
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         
-        <!-- Especialidade 1 -->
-        <div class="bg-white rounded-3xl border border-slate-200/90 p-8 shadow-sm card-hover flex flex-col justify-between">
+        <!-- Card 1 -->
+        <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
           <div class="space-y-4">
-            <div class="w-14 h-14 rounded-2xl bg-blue-50 text-brand-royal flex items-center justify-center">
+            <div class="w-14 h-14 rounded-2xl bg-cyan-50 text-cps-cyan flex items-center justify-center group-hover:bg-cps-cyan group-hover:text-white transition">
+              <i data-lucide="activity" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900">Osteopatia para Coluna</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Tratamento minucioso para hérnia de disco, lombalgias crônicas, ciatalgias, cervicalgias e torcicolos, atuando na descompressão articular sem cirurgias.
+            </p>
+          </div>
+          <div class="pt-6">
+            <a href="#agendamento" class="text-xs font-bold text-cps-cyan group-hover:text-cps-teal flex items-center gap-1">
+              Agendar Avaliação <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+          <div class="space-y-4">
+            <div class="w-14 h-14 rounded-2xl bg-cyan-50 text-cps-cyan flex items-center justify-center group-hover:bg-cps-cyan group-hover:text-white transition">
+              <i data-lucide="heart" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900">Osteopatia Pediátrica</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Técnicas manuais extremamente suaves para recém-nascidos e bebês com cólicas frequentes, refluxo, assimetrias cranianas e dificuldades na amamentação.
+            </p>
+          </div>
+          <div class="pt-6">
+            <a href="#agendamento" class="text-xs font-bold text-cps-cyan group-hover:text-cps-teal flex items-center gap-1">
+              Agendar Avaliação <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+          <div class="space-y-4">
+            <div class="w-14 h-14 rounded-2xl bg-cyan-50 text-cps-cyan flex items-center justify-center group-hover:bg-cps-cyan group-hover:text-white transition">
+              <i data-lucide="shield-check" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900">Conceito Mulligan (Terapia Manual)</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Mobilizações ativas com movimento que eliminam a dor articular no mesmo momento, sem manipulações agressivas ou estalos fortes.
+            </p>
+          </div>
+          <div class="pt-6">
+            <a href="#agendamento" class="text-xs font-bold text-cps-cyan group-hover:text-cps-teal flex items-center gap-1">
+              Agendar Avaliação <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+          <div class="space-y-4">
+            <div class="w-14 h-14 rounded-2xl bg-cyan-50 text-cps-cyan flex items-center justify-center group-hover:bg-cps-cyan group-hover:text-white transition">
               <i data-lucide="bone" class="w-7 h-7"></i>
             </div>
-            <h3 class="text-xl font-bold text-slate-900">Coluna Vertebral & Hérnias</h3>
+            <h3 class="text-xl font-bold text-slate-900">Reabilitação Ortopédica (Joelho/LCA)</h3>
             <p class="text-slate-600 text-sm leading-relaxed">
-              Tratamento conservador e não cirúrgico de hérnias de disco, protusões, lombociatalgia, dor cervical com irradiação para os braços e rigidez postural decorrente do trabalho no computador.
+              Recuperação funcional pré e pós-operatória de joelho, ombro, quadril, tendinites e lesões desportivas com retorno seguro ao treino.
             </p>
-            <ul class="text-xs text-slate-700 font-semibold space-y-2 pt-2 border-t border-slate-100">
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Descompressão discal manual
-              </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Alívio da dor do nervo ciático
-              </li>
-            </ul>
           </div>
           <div class="pt-6">
-            <a href="#agendamento-online" class="text-xs font-bold text-brand-royal hover:underline flex items-center gap-1">
-              Agendar Avaliação de Coluna <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            <a href="#agendamento" class="text-xs font-bold text-cps-cyan group-hover:text-cps-teal flex items-center gap-1">
+              Agendar Avaliação <i data-lucide="chevron-right" class="w-4 h-4"></i>
             </a>
           </div>
         </div>
 
-        <!-- Especialidade 2 -->
-        <div class="bg-white rounded-3xl border border-slate-200/90 p-8 shadow-sm card-hover flex flex-col justify-between">
+        <!-- Card 5 -->
+        <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
           <div class="space-y-4">
-            <div class="w-14 h-14 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center">
-              <i data-lucide="baby" class="w-7 h-7"></i>
-            </div>
-            <h3 class="text-xl font-bold text-slate-900">Osteopatia Pediátrica & Bebês</h3>
-            <p class="text-slate-600 text-sm leading-relaxed">
-              Cuidados delicados e indolores para recém-nascidos e lactentes. Tratamento das causas mecânicas de cólicas intestinais, refluxo gastroesofágico, torcicolo congênito e assimetrias cranianas (plagiocefalia).
-            </p>
-            <ul class="text-xs text-slate-700 font-semibold space-y-2 pt-2 border-t border-slate-100">
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-4 h-4 text-teal-600"></i> Toques ultrassuaves e seguros
-              </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-4 h-4 text-teal-600"></i> Melhora expressiva do sono do bebê
-              </li>
-            </ul>
-          </div>
-          <div class="pt-6">
-            <a href="#agendamento-online" class="text-xs font-bold text-teal-700 hover:underline flex items-center gap-1">
-              Agendar Avaliação Pediátrica <i data-lucide="chevron-right" class="w-4 h-4"></i>
-            </a>
-          </div>
-        </div>
-
-        <!-- Especialidade 3 -->
-        <div class="bg-white rounded-3xl border border-slate-200/90 p-8 shadow-sm card-hover flex flex-col justify-between">
-          <div class="space-y-4">
-            <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center">
-              <i data-lucide="shield-alert" class="w-7 h-7"></i>
-            </div>
-            <h3 class="text-xl font-bold text-slate-900">Reabilitação Ortopédica & Joelho</h3>
-            <p class="text-slate-600 text-sm leading-relaxed">
-              Acompanhamento intensivo pré e pós-operatório (reconstrução de LCA, meniscos, próteses de quadril) e tratamento de lesões desportivas, bursites, tendinopatias e entorses com protocolos atualizados.
-            </p>
-            <ul class="text-xs text-slate-700 font-semibold space-y-2 pt-2 border-t border-slate-100">
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-4 h-4 text-indigo-600"></i> Recuperação de amplitude sem trauma
-              </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-4 h-4 text-indigo-600"></i> Retorno funcional para atletas e amadores
-              </li>
-            </ul>
-          </div>
-          <div class="pt-6">
-            <a href="#agendamento-online" class="text-xs font-bold text-indigo-700 hover:underline flex items-center gap-1">
-              Agendar Reabilitação Articular <i data-lucide="chevron-right" class="w-4 h-4"></i>
-            </a>
-          </div>
-        </div>
-
-        <!-- Especialidade 4 -->
-        <div class="bg-white rounded-3xl border border-slate-200/90 p-8 shadow-sm card-hover flex flex-col justify-between">
-          <div class="space-y-4">
-            <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center">
+            <div class="w-14 h-14 rounded-2xl bg-cyan-50 text-cps-cyan flex items-center justify-center group-hover:bg-cps-cyan group-hover:text-white transition">
               <i data-lucide="smile" class="w-7 h-7"></i>
             </div>
-            <h3 class="text-xl font-bold text-slate-900">DTM, Mandíbula & Cefaleias</h3>
+            <h3 class="text-xl font-bold text-slate-900">DTM & Cefaleias Tensionais</h3>
             <p class="text-slate-600 text-sm leading-relaxed">
-              Disfunções da articulação temporomandibular (estalos, dor ao mastigar, bruxismo), dores de cabeça tensionais e sensação de zumbido ou pressão no ouvido decorrentes de espasmos musculares cervicais.
+              Alívio de dores na mandíbula, estalos, bruxismo e dores de cabeça crônicas causadas por tensão muscular na cervical e face.
             </p>
-            <ul class="text-xs text-slate-700 font-semibold space-y-2 pt-2 border-t border-slate-100">
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-4 h-4 text-amber-600"></i> Liberação miofascial intra e extraoral
-              </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-4 h-4 text-amber-600"></i> Alívio da tensão crônica facial
-              </li>
-            </ul>
           </div>
           <div class="pt-6">
-            <a href="#agendamento-online" class="text-xs font-bold text-amber-700 hover:underline flex items-center gap-1">
-              Agendar Consulta de DTM <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            <a href="#agendamento" class="text-xs font-bold text-cps-cyan group-hover:text-cps-teal flex items-center gap-1">
+              Agendar Avaliação <i data-lucide="chevron-right" class="w-4 h-4"></i>
             </a>
           </div>
         </div>
 
-        <!-- Especialidade 5 -->
-        <div class="bg-white rounded-3xl border border-slate-200/90 p-8 shadow-sm card-hover flex flex-col justify-between">
+        <!-- Card 6 -->
+        <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
           <div class="space-y-4">
-            <div class="w-14 h-14 rounded-2xl bg-sky-50 text-sky-700 flex items-center justify-center">
-              <i data-lucide="sparkles" class="w-7 h-7"></i>
+            <div class="w-14 h-14 rounded-2xl bg-cyan-50 text-cps-cyan flex items-center justify-center group-hover:bg-cps-cyan group-hover:text-white transition">
+              <i data-lucide="receipt" class="w-7 h-7"></i>
             </div>
-            <h3 class="text-xl font-bold text-slate-900">Fisioterapia Fora da Caixa</h3>
+            <h3 class="text-xl font-bold text-slate-900">Reembolso do Plano de Saúde</h3>
             <p class="text-slate-600 text-sm leading-relaxed">
-              Diferente de clínicas convencionais onde você fica sozinho em aparelhos de calor, aqui o atendimento é 100% manual, ativo e personalizado durante toda a sessão de 50 a 60 minutos.
-            </p>
-            <ul class="text-xs text-slate-700 font-semibold space-y-2 pt-2 border-t border-slate-100">
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-4 h-4 text-sky-600"></i> Sem tratamentos passivos genéricos
-              </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-4 h-4 text-sky-600"></i> Foco na autonomia do paciente
-              </li>
-            </ul>
-          </div>
-          <div class="pt-6">
-            <a href="#agendamento-online" class="text-xs font-bold text-sky-700 hover:underline flex items-center gap-1">
-              Conhecer a Abordagem CPS <i data-lucide="chevron-right" class="w-4 h-4"></i>
-            </a>
-          </div>
-        </div>
-
-        <!-- Especialidade 6 (Card de Contato Rápido) -->
-        <div class="creb-gradient rounded-3xl p-8 shadow-xl text-white flex flex-col justify-between">
-          <div class="space-y-3">
-            <span class="text-xs font-bold uppercase tracking-widest text-brand-cyan">Atendimento Personalizado</span>
-            <h3 class="text-2xl font-black">Não sabe qual especialidade escolher?</h3>
-            <p class="text-xs text-slate-200 leading-relaxed">
-              Nossa equipe de triagem clínica orienta você sobre a melhor indicação para o seu caso pelo WhatsApp.
+              Fornecemos recibo e laudo descritivo completo para você solicitar o reembolso integral ou parcial no seu convênio médico (Bradesco, SulAmérica, etc.).
             </p>
           </div>
           <div class="pt-6">
-            <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer" class="block w-full py-3.5 px-4 rounded-xl bg-brand-cyan hover:bg-cyan-400 text-brand-navy font-black text-center text-xs uppercase tracking-wider transition shadow-lg">
-              Tirar Dúvidas com a Recepção
+            <a href="#agendamento" class="text-xs font-bold text-cps-cyan group-hover:text-cps-teal flex items-center gap-1">
+              Saiba como funciona <i data-lucide="chevron-right" class="w-4 h-4"></i>
             </a>
           </div>
         </div>
@@ -483,152 +375,49 @@
     </div>
   </section>
 
-  <!-- ================= 6. TRATAMENTOS & O CONCEITO MULLIGAN ================= -->
-  <section id="tratamentos" class="py-24 bg-white border-y border-slate-200/80">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        
-        <!-- Left: Certificate Showcase -->
-        <div class="lg:col-span-5 text-center">
-          <div class="relative inline-block max-w-sm rounded-3xl p-2 bg-gradient-to-tr from-brand-navy to-brand-royal shadow-2xl">
-            <img 
-              src="assets/mulligan-certificate.jpg" 
-              alt="Certificado Oficial Mulligan Concept - Dr. Israel Silva" 
-              class="rounded-2xl w-full object-cover"
-            >
-            <div class="absolute -bottom-4 left-6 right-6 bg-white rounded-xl p-3 shadow-xl border border-slate-100 flex items-center justify-between">
-              <div class="text-left">
-                <p class="text-[10px] font-bold uppercase tracking-wider text-brand-blue">Terapia Manual Internacional</p>
-                <p class="text-xs font-black text-slate-900">Mulligan Concept Certified</p>
-              </div>
-              <i data-lucide="award" class="w-6 h-6 text-brand-royal"></i>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: What is Mulligan Concept? -->
-        <div class="lg:col-span-7 space-y-6">
-          <span class="text-xs font-black tracking-widest text-brand-royal uppercase bg-blue-50 border border-blue-200 px-3.5 py-1.5 rounded-full inline-block">
-            Tecnologia Terapêutica de Ponta
-          </span>
-
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-navy tracking-tight leading-tight">
-            O que é o Conceito Mulligan e por que ele elimina a dor com rapidez?
-          </h2>
-
-          <p class="text-slate-600 text-base leading-relaxed">
-            Criado pelo fisioterapeuta neozelandês Brian Mulligan, o método é reconhecido mundialmente pela técnica de <strong>MWM (Mobilização com Movimento)</strong>. Diferente de manipulações bruscas ou estalos dolorosos, a técnica combina um deslizamento articular preciso realizado pelo osteopata com um movimento ativo e suave do paciente.
-          </p>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-            
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-              <div class="flex items-center gap-2.5 text-brand-navy font-bold text-sm mb-1.5">
-                <i data-lucide="feather" class="w-5 h-5 text-brand-royal"></i>
-                <span>Regra Básica: Zero Dor</span>
-              </div>
-              <p class="text-xs text-slate-600 leading-relaxed">
-                Se doer, a técnica não está correta. O princípio é restabelecer a harmonia das facetas articulares em total conforto.
-              </p>
-            </div>
-
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-              <div class="flex items-center gap-2.5 text-brand-navy font-bold text-sm mb-1.5">
-                <i data-lucide="zap" class="w-5 h-5 text-brand-royal"></i>
-                <span>Alívio no Mesmo Instante</span>
-              </div>
-              <p class="text-xs text-slate-600 leading-relaxed">
-                O ganho de mobilidade e a redução da dor são testados e comprovados já dentro da própria sessão de consulta.
-              </p>
-            </div>
-
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-              <div class="flex items-center gap-2.5 text-brand-navy font-bold text-sm mb-1.5">
-                <i data-lucide="shield-check" class="w-5 h-5 text-brand-royal"></i>
-                <span>Altíssima Segurança</span>
-              </div>
-              <p class="text-xs text-slate-600 leading-relaxed">
-                Indicado para idosos, atletas em crise aguda e pessoas com medo de estalos na coluna vertebral.
-              </p>
-            </div>
-
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-              <div class="flex items-center gap-2.5 text-brand-navy font-bold text-sm mb-1.5">
-                <i data-lucide="user-check" class="w-5 h-5 text-brand-royal"></i>
-                <span>Profissional Credenciado</span>
-              </div>
-              <p class="text-xs text-slate-600 leading-relaxed">
-                Capacitação com instrutores internacionais oficiais, garantindo técnica segura e qualificada no CPS.
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= 7. CORPO CLÍNICO (DR. ISRAEL SILVA) ================= -->
-  <section id="corpo-clinico" class="py-24 bg-slate-50">
+  <!-- ================= 5. CORPO CLÍNICO (DR. ISRAEL SILVA) ================= -->
+  <section id="corpo-clinico" class="py-24 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <div class="bg-white rounded-3xl border border-slate-200 p-8 sm:p-14 shadow-sm">
+      <div class="bg-slate-50 rounded-3xl border border-slate-200 p-8 sm:p-14 shadow-sm">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           
           <div class="lg:col-span-5 text-center">
             <div class="relative inline-block">
               <img 
-                src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=800&q=80" 
-                alt="Dr. Israel Silva - Fisioterapeuta e Osteopata" 
-                class="w-72 sm:w-80 rounded-2xl object-cover shadow-xl mx-auto"
+                src="assets/mulligan-certificate.jpg" 
+                alt="Dr. Israel Silva - Conceito Mulligan" 
+                class="w-72 sm:w-80 rounded-3xl object-cover shadow-xl mx-auto border-2 border-white"
               >
-              <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-brand-navy text-white text-[11px] font-bold uppercase tracking-wider py-1.5 px-4 rounded-full shadow-lg whitespace-nowrap">
+              <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-cps-navy text-white text-[11px] font-bold uppercase tracking-wider py-1.5 px-4 rounded-full shadow-lg whitespace-nowrap">
                 Fisioterapia Fora da Caixa 📦
               </div>
             </div>
           </div>
 
           <div class="lg:col-span-7 space-y-4 text-left">
-            <span class="text-xs font-black tracking-widest text-brand-royal uppercase bg-blue-50 border border-blue-200 px-3.5 py-1.5 rounded-full inline-block">
-              Responsável Técnico
-            </span>
-
-            <h2 class="text-3xl font-extrabold text-brand-navy tracking-tight">
-              Dr. Israel Silva
-            </h2>
-            <p class="text-brand-blue font-bold text-sm">
-              Fisioterapeuta • Especialista em Osteopatia Pediátrica e Adulto • Certificação Internacional Mulligan Concept
-            </p>
-
-            <p class="text-slate-600 text-sm leading-relaxed">
-              Atuante no <strong>Centro de Postura e Saúde (@centrodeposturaesaude)</strong>, o Dr. Israel Silva dedica sua prática clínica à resolução de quadros musculoesqueléticos complexos através de uma visão biomecânica integrada.
-            </p>
-            <p class="text-slate-600 text-sm leading-relaxed">
-              Com formação contínua nas principais escolas de terapia manual do mundo, seu foco é entregar alívio duradouro sem depender de medicamentos constantes, além de acolher famílias que necessitam de intervenção pediátrica de máxima sensibilidade para seus bebês.
-            </p>
-
-            <div class="grid grid-cols-3 gap-3 pt-4 border-t border-slate-100 text-center">
-              <div class="bg-slate-50 p-3 rounded-xl">
-                <span class="block text-lg font-black text-brand-navy">+1000</span>
-                <span class="text-[11px] text-slate-500 font-semibold">Horas Clínicas</span>
-              </div>
-              <div class="bg-slate-50 p-3 rounded-xl">
-                <span class="block text-lg font-black text-brand-navy">Mulligan</span>
-                <span class="text-[11px] text-slate-500 font-semibold">Terapia Manual</span>
-              </div>
-              <div class="bg-slate-50 p-3 rounded-xl">
-                <span class="block text-lg font-black text-brand-navy">CPS</span>
-                <span class="text-[11px] text-slate-500 font-semibold">Clínica Oficial</span>
-              </div>
+            <div>
+              <h2 class="text-3xl font-extrabold text-cps-navy tracking-tight">
+                Dr. Israel Silva
+              </h2>
+              <p class="text-cps-cyan font-bold text-sm mt-1">
+                Fisioterapeuta • Osteopatia Pediátrica e Adulto • Certificação Internacional Mulligan Concept
+              </p>
             </div>
 
-            <div class="pt-2">
-              <a href="https://www.instagram.com/drisraelsilva/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-brand-royal transition">
-                <i data-lucide="instagram" class="w-4 h-4 text-pink-600"></i>
-                <span>Acompanhe os casos e vídeos no Instagram: <strong>@drisraelsilva</strong></span>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Atuante no <strong>Centro de Postura e Saúde (@centrodeposturaesaude)</strong>, o Dr. Israel Silva dedica sua prática clínica à resolução de dores crônicas e agudas através de uma abordagem biomecânica integrada e humanizada.
+            </p>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Com formação contínua nas principais escolas de terapia manual do mundo, seu foco é entregar atendimento 100% individualizado de 50 a 60 minutos por sessão, sem protocolos genéricos.
+            </p>
+
+            <div class="pt-4 border-t border-slate-200 flex flex-wrap items-center gap-6">
+              <a href="https://www.instagram.com/drisraelsilva/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-bold text-slate-700 hover:text-cps-cyan transition">
+                <i data-lucide="instagram" class="w-5 h-5 text-pink-600"></i>
+                <span>Acompanhe no Instagram: @drisraelsilva</span>
               </a>
+              <span class="text-xs text-slate-400 font-semibold">• Atendimento Presencial no CPS</span>
             </div>
 
           </div>
@@ -639,147 +428,68 @@
     </div>
   </section>
 
-  <!-- ================= 8. CONVÊNIOS & SISTEMA DE REEMBOLSO (CREB STYLE) ================= -->
-  <section id="reembolso" class="py-24 bg-white border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
-        <span class="text-xs font-black tracking-widest text-emerald-700 uppercase bg-emerald-50 border border-emerald-200 px-3.5 py-1.5 rounded-full inline-block">
-          Transparência & Acesso
-        </span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-navy tracking-tight">
-          Como Funciona o Sistema de Reembolso pelo seu Plano de Saúde
-        </h2>
-        <p class="text-slate-600 text-base">
-          Você sabia que a grande maioria dos convênios médicos permite que você realize consultas com o profissional de sua escolha e receba o valor de volta?
-        </p>
-      </div>
-
-      <!-- 3 Steps of Reembolso -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-14">
-        
-        <div class="bg-slate-50 border border-slate-200 p-8 rounded-3xl relative">
-          <span class="w-10 h-10 rounded-xl bg-brand-navy text-white font-black text-base flex items-center justify-center mb-5">
-            1
-          </span>
-          <h3 class="text-lg font-bold text-slate-900 mb-2">Consulta Personalizada</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">
-            Você realiza seu atendimento completo e individualizado no CPS com hora marcada, sem a pressa ou filas dos convênios convencionais.
-          </p>
-        </div>
-
-        <div class="bg-slate-50 border border-slate-200 p-8 rounded-3xl relative">
-          <span class="w-10 h-10 rounded-xl bg-brand-navy text-white font-black text-base flex items-center justify-center mb-5">
-            2
-          </span>
-          <h3 class="text-lg font-bold text-slate-900 mb-2">Emissão de Recibo & Laudo</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">
-            Fornecemos a nota fiscal/recibo detalhado com registro profissional (CREFITO) e descrição clínica completa exigida pelas operadoras.
-          </p>
-        </div>
-
-        <div class="bg-slate-50 border border-slate-200 p-8 rounded-3xl relative">
-          <span class="w-10 h-10 rounded-xl bg-brand-navy text-white font-black text-base flex items-center justify-center mb-5">
-            3
-          </span>
-          <h3 class="text-lg font-bold text-slate-900 mb-2">Solicitação no Aplicativo</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">
-            Basta enviar a foto do documento pelo aplicativo do seu plano de saúde. O valor é creditado diretamente na sua conta bancária.
-          </p>
-        </div>
-
-      </div>
-
-      <!-- Convênios aceitos para reembolso -->
-      <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 text-center">
-        <p class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-4">
-          Planos com ampla cobertura para política de livre escolha / reembolso:
-        </p>
-        <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-extrabold text-slate-600">
-          <span class="px-3.5 py-1.5 bg-white rounded-lg border border-slate-200 shadow-sm">Bradesco Saúde</span>
-          <span class="px-3.5 py-1.5 bg-white rounded-lg border border-slate-200 shadow-sm">SulAmérica</span>
-          <span class="px-3.5 py-1.5 bg-white rounded-lg border border-slate-200 shadow-sm">Amil One</span>
-          <span class="px-3.5 py-1.5 bg-white rounded-lg border border-slate-200 shadow-sm">Care Plus</span>
-          <span class="px-3.5 py-1.5 bg-white rounded-lg border border-slate-200 shadow-sm">Porto Seguro</span>
-          <span class="px-3.5 py-1.5 bg-white rounded-lg border border-slate-200 shadow-sm">Unimed (Nacional/Seguros)</span>
-          <span class="px-3.5 py-1.5 bg-white rounded-lg border border-slate-200 shadow-sm">Omint</span>
-          <span class="px-3.5 py-1.5 bg-white rounded-lg border border-slate-200 shadow-sm">Allianz Saúde</span>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ================= 9. SISTEMA DE AGENDAMENTO ONLINE (SUPABASE CPS INTEGRADO) ================= -->
-  <section id="agendamento-online" class="py-24 bg-slate-900 text-white relative overflow-hidden">
-    
+  <!-- ================= 6. AGENDAMENTO ONLINE (SUPABASE CPS INTEGRADO) ================= -->
+  <section id="agendamento" class="py-24 bg-cps-navy text-white relative overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         
-        <!-- Left: Call to action -->
+        <!-- Left: Text -->
         <div class="lg:col-span-6 space-y-6">
-          <span class="text-xs font-black tracking-widest text-brand-cyan uppercase bg-blue-950 border border-blue-800 px-3.5 py-1.5 rounded-full inline-block">
-            Portal de Agendamento • Clinica CPS
+          <span class="inline-block px-3.5 py-1.5 rounded-full bg-white/10 text-cps-cyanLight text-xs font-bold uppercase tracking-wider border border-white/15">
+            Atendimento com Hora Marcada
           </span>
 
           <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">
-            Solicite seu Pré-Agendamento Online com Prioridade
+            Agende sua Consulta no Centro de Postura e Saúde
           </h2>
 
           <p class="text-slate-300 text-sm leading-relaxed">
-            Preencha os dados ao lado. O sistema registra seu pedido diretamente no banco de dados da clínica e direciona você para a confirmação de horário no WhatsApp.
+            Preencha seus dados ao lado. Nosso sistema registra seu pré-agendamento diretamente no banco de dados da clínica e abre o WhatsApp da recepção para confirmar seu horário.
           </p>
 
-          <div class="space-y-3.5 text-xs text-slate-300 pt-2">
+          <div class="space-y-3 text-xs text-slate-300 pt-2">
             <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
-                <i data-lucide="check" class="w-4 h-4"></i>
-              </div>
-              <span><strong>Banco de Dados Protegido:</strong> Conexão segura via Supabase PostgreSQL</span>
+              <i data-lucide="check-circle" class="w-4 h-4 text-cps-cyan shrink-0"></i>
+              <span>Consultório privativo e climatizado no CPS</span>
             </div>
             <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
-                <i data-lucide="clock" class="w-4 h-4"></i>
-              </div>
-              <span>Retorno ágil em horário comercial por nossa equipe de recepção</span>
+              <i data-lucide="check-circle" class="w-4 h-4 text-cps-cyan shrink-0"></i>
+              <span>Sessões individuais de 50 a 60 minutos com o especialista</span>
             </div>
             <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
-                <i data-lucide="map-pin" class="w-4 h-4"></i>
-              </div>
-              <span>Consultório privativo no <strong>Centro de Postura e Saúde</strong></span>
+              <i data-lucide="check-circle" class="w-4 h-4 text-cps-cyan shrink-0"></i>
+              <span>Emissão de recibo detalhado com CREFITO para reembolso</span>
             </div>
           </div>
 
-          <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs text-slate-300">
-            <p class="font-bold text-white mb-1">Prefere agendar diretamente pelo WhatsApp?</p>
-            <p>Seja atendido pela nossa secretária em poucos segundos.</p>
-            <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-emerald-400 font-bold hover:underline mt-2">
-              <i data-lucide="phone" class="w-3.5 h-3.5"></i> Abrir WhatsApp da Recepção
+          <div class="pt-2">
+            <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition">
+              <i data-lucide="phone-call" class="w-4 h-4"></i>
+              <span>Prefere falar direto com a recepção no WhatsApp? Clique aqui</span>
             </a>
           </div>
 
         </div>
 
-        <!-- Right: Real Supabase Form -->
+        <!-- Right: Form Connected to Supabase -->
         <div class="lg:col-span-6">
-          <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 sm:p-9 shadow-2xl space-y-4">
+          <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-6 sm:p-9 shadow-2xl space-y-4">
             
             <div class="border-b border-white/15 pb-3">
-              <h3 class="text-xl font-black text-white">Formulário de Pré-Consulta</h3>
-              <p class="text-xs text-slate-300">Informe suas necessidades para o preparo do seu prontuário</p>
+              <h3 class="text-xl font-bold text-white">Solicitar Horário</h3>
+              <p class="text-xs text-slate-300">Resposta rápida em horário comercial</p>
             </div>
 
             <form id="cps-booking-form" onsubmit="handleCpsBooking(event)" class="space-y-4 text-left">
               
               <div>
-                <label for="cps-name" class="block text-xs font-bold text-slate-200 mb-1">Nome Completo *</label>
+                <label for="cps-name" class="block text-xs font-bold text-slate-200 mb-1">Seu Nome Completo *</label>
                 <input 
                   type="text" 
                   id="cps-name" 
                   required 
-                  placeholder="Seu nome ou nome do responsável" 
-                  class="w-full px-4 py-3 rounded-xl bg-slate-950/70 border border-white/15 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-cyan"
+                  placeholder="Nome do paciente ou responsável" 
+                  class="w-full px-4 py-3 rounded-xl bg-slate-950/70 border border-white/15 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-cps-cyan"
                 >
               </div>
 
@@ -791,15 +501,15 @@
                     id="cps-phone" 
                     required 
                     placeholder="(00) 00000-0000" 
-                    class="w-full px-4 py-3 rounded-xl bg-slate-950/70 border border-white/15 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-cyan"
+                    class="w-full px-4 py-3 rounded-xl bg-slate-950/70 border border-white/15 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-cps-cyan"
                   >
                 </div>
 
                 <div>
-                  <label for="cps-period" class="block text-xs font-bold text-slate-200 mb-1">Turno de Preferência</label>
+                  <label for="cps-period" class="block text-xs font-bold text-slate-200 mb-1">Turno Preferido</label>
                   <select 
                     id="cps-period" 
-                    class="w-full px-4 py-3 rounded-xl bg-slate-950/70 border border-white/15 text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-cyan"
+                    class="w-full px-4 py-3 rounded-xl bg-slate-950/70 border border-white/15 text-white text-sm focus:outline-none focus:ring-2 focus:ring-cps-cyan"
                   >
                     <option value="Manhã (08h às 12h)">Manhã (08h às 12h)</option>
                     <option value="Tarde (13h às 19h)">Tarde (13h às 19h)</option>
@@ -812,42 +522,38 @@
                 <label for="cps-specialty" class="block text-xs font-bold text-slate-200 mb-1">Especialidade Desejada *</label>
                 <select 
                   id="cps-specialty" 
-                  class="w-full px-4 py-3 rounded-xl bg-slate-950/70 border border-white/15 text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-cyan"
+                  class="w-full px-4 py-3 rounded-xl bg-slate-950/70 border border-white/15 text-white text-sm focus:outline-none focus:ring-2 focus:ring-cps-cyan"
                 >
-                  <option value="Coluna & Dor Crônica">Coluna Vertebral & Dor Crônica / Hérnia</option>
-                  <option value="Osteopatia Pediátrica">Osteopatia Pediátrica (Bebê / Cólicas / Refluxo)</option>
-                  <option value="Reabilitação Ortopédica">Reabilitação Ortopédica (Joelho, Ombro, Pós-op)</option>
-                  <option value="DTM & Enxaqueca">DTM, Mandíbula & Cefaleia Tensional</option>
+                  <option value="Osteopatia Adulta (Coluna/Hérnia)">Osteopatia para Coluna (Hérnia / Lombar / Cervical)</option>
+                  <option value="Osteopatia Pediátrica (Bebê)">Osteopatia Pediátrica (Bebê / Cólica / Refluxo)</option>
+                  <option value="Reabilitação Ortopédica (Joelho/LCA)">Reabilitação Ortopédica (Joelho, Ombro, Pós-op)</option>
+                  <option value="Conceito Mulligan (Terapia Manual)">Conceito Mulligan (Terapia Manual Indolor)</option>
                   <option value="Outra Queixa">Outra queixa musculoesquelética</option>
                 </select>
               </div>
 
               <div>
-                <label for="cps-notes" class="block text-xs font-bold text-slate-200 mb-1">Sintomas ou Motivo da Consulta (Opcional)</label>
+                <label for="cps-notes" class="block text-xs font-bold text-slate-200 mb-1">Principal Sintoma / Motivo (Opcional)</label>
                 <textarea 
                   id="cps-notes" 
                   rows="2" 
-                  placeholder="Ex: Hérnia lombar L4-L5 há 6 meses / Bebê de 40 dias com refluxo e choro constante" 
-                  class="w-full px-4 py-2.5 rounded-xl bg-slate-950/70 border border-white/15 text-white placeholder-slate-400 text-xs focus:outline-none focus:ring-2 focus:ring-brand-cyan"
+                  placeholder="Ex: Dor na lombar ao caminhar / Bebê com cólica há semanas" 
+                  class="w-full px-4 py-2.5 rounded-xl bg-slate-950/70 border border-white/15 text-white placeholder-slate-400 text-xs focus:outline-none focus:ring-2 focus:ring-cps-cyan"
                 ></textarea>
               </div>
 
               <button 
                 type="submit" 
                 id="cps-btn"
-                class="w-full py-4 px-6 rounded-xl bg-brand-cyan hover:bg-cyan-400 text-brand-navy font-black text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-xl shadow-cyan-500/20"
+                class="w-full py-4 px-6 rounded-xl bg-cps-cyan hover:bg-cyan-400 text-slate-950 font-black text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-xl"
               >
                 <i data-lucide="send" class="w-4 h-4"></i>
                 <span id="cps-btn-text">Confirmar Pré-Agendamento</span>
               </button>
 
               <div id="cps-feedback" class="hidden text-xs text-emerald-400 font-bold text-center pt-1">
-                ✓ Registro gravado com sucesso no Supabase CPS! Abrindo WhatsApp...
+                ✓ Gravado com sucesso no Supabase CPS! Abrindo WhatsApp...
               </div>
-
-              <p class="text-[10px] text-slate-400 text-center">
-                🔒 Seus dados são confidenciais e regidos pela Lei Geral de Proteção de Dados (LGPD).
-              </p>
 
             </form>
 
@@ -858,194 +564,56 @@
     </div>
   </section>
 
-  <!-- ================= 10. UNIDADE & INFRAESTRUTURA ================= -->
-  <section id="unidade" class="py-24 bg-white">
+  <!-- ================= 7. FOOTER COM LOGO OFICIAL CPS ================= -->
+  <footer id="contato" class="bg-white text-slate-600 py-16 border-t border-slate-200 text-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-slate-100">
         
-        <div class="lg:col-span-6 space-y-6">
-          <span class="text-xs font-black tracking-widest text-brand-royal uppercase bg-blue-50 border border-blue-200 px-3.5 py-1.5 rounded-full inline-block">
-            Infraestrutura Clínica
-          </span>
-
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-navy tracking-tight leading-tight">
-            Ambiente Planejado para o seu Conforto e Recuperação
-          </h2>
-
-          <p class="text-slate-600 text-base leading-relaxed">
-            Localizado no <strong>Centro de Postura e Saúde</strong>, nosso espaço foi desenhado para proporcionar privacidade, biossegurança e acolhimento desde a sua chegada.
-          </p>
-
-          <div class="space-y-3.5 text-sm text-slate-700">
-            <div class="flex items-center gap-3">
-              <i data-lucide="check-circle" class="w-5 h-5 text-brand-blue shrink-0"></i>
-              <span>Consultórios privativos e climatizados</span>
-            </div>
-            <div class="flex items-center gap-3">
-              <i data-lucide="check-circle" class="w-5 h-5 text-brand-blue shrink-0"></i>
-              <span>Ambiente tranquilo preparado para amamentação e cuidados infantis</span>
-            </div>
-            <div class="flex items-center gap-3">
-              <i data-lucide="check-circle" class="w-5 h-5 text-brand-blue shrink-0"></i>
-              <span>Maca osteopática especializada com regulagem ergonômica</span>
-            </div>
-            <div class="flex items-center gap-3">
-              <i data-lucide="check-circle" class="w-5 h-5 text-brand-blue shrink-0"></i>
-              <span>Fácil acesso e proximidade com estacionamentos conveniados</span>
-            </div>
-          </div>
-
-          <div class="pt-2">
-            <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-brand-royal hover:underline">
-              <i data-lucide="navigation" class="w-4 h-4"></i>
-              <span>Como Chegar ao Centro de Postura e Saúde</span>
-            </a>
-          </div>
-
-        </div>
-
-        <div class="lg:col-span-6">
-          <div class="rounded-3xl overflow-hidden border border-slate-200 shadow-xl aspect-video bg-slate-100 relative">
-            <img 
-              src="https://images.unsplash.com/photo-1629909615184-74f495363b67?auto=format&fit=crop&w=1000&q=80" 
-              alt="Consultório Centro de Postura e Saúde" 
-              class="w-full h-full object-cover"
-            >
-            <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-lg border border-slate-100 flex items-center justify-between">
-              <div>
-                <p class="text-xs font-black text-slate-900">Centro de Postura e Saúde (CPS)</p>
-                <p class="text-[11px] text-slate-500">Atendimento com Hora Marcada</p>
-              </div>
-              <span class="px-3 py-1 bg-brand-royal text-white rounded-lg text-[10px] font-bold uppercase">
-                Visitar
-              </span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ================= 11. FAQ INSTITUCIONAL ================= -->
-  <section class="py-20 bg-slate-50 border-t border-slate-200">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="text-center mb-12 space-y-3">
-        <span class="text-xs font-black tracking-widest text-brand-royal uppercase bg-blue-50 border border-blue-200 px-3.5 py-1.5 rounded-full inline-block">
-          Dúvidas Comuns
-        </span>
-        <h2 class="text-3xl font-extrabold text-brand-navy tracking-tight">
-          Perguntas Frequentes
-        </h2>
-      </div>
-
-      <div class="space-y-3">
-        
-        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-          <button onclick="toggleFaq(1)" class="w-full py-4 px-6 text-left flex items-center justify-between font-bold text-slate-900 hover:text-brand-royal transition text-sm">
-            <span>A consulta de osteopatia com o Conceito Mulligan dói?</span>
-            <i id="faq-icon-1" data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform"></i>
-          </button>
-          <div id="faq-content-1" class="hidden px-6 pb-5 text-xs text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-            Não. A premissa internacional do Conceito Mulligan é que o tratamento seja 100% indolor. Não realizamos manipulações traumáticas ou com estalos fortes que gerem desconforto ou tensão no paciente.
-          </div>
-        </div>
-
-        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-          <button onclick="toggleFaq(2)" class="w-full py-4 px-6 text-left flex items-center justify-between font-bold text-slate-900 hover:text-brand-royal transition text-sm">
-            <span>O atendimento em bebês recém-nascidos é seguro?</span>
-            <i id="faq-icon-2" data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform"></i>
-          </button>
-          <div id="faq-content-2" class="hidden px-6 pb-5 text-xs text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-            Totalmente seguro. Na osteopatia pediátrica, as pressões aplicadas são microscópicas (menos de 5 gramas de pressão, como encostar a polpa do dedo na própria pálpebra). O bebê costuma relaxar e muitos chegam a dormir durante o atendimento.
-          </div>
-        </div>
-
-        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-          <button onclick="toggleFaq(3)" class="w-full py-4 px-6 text-left flex items-center justify-between font-bold text-slate-900 hover:text-brand-royal transition text-sm">
-            <span>Como posso solicitar o reembolso do meu convênio?</span>
-            <i id="faq-icon-3" data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform"></i>
-          </button>
-          <div id="faq-content-3" class="hidden px-6 pb-5 text-xs text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-            Ao término da consulta, emitimos a nota fiscal/recibo com dados do profissional (CREFITO) e descrição da sessão. Você anexa esse documento no app do seu plano e a operadora realiza o depósito do valor de acordo com a sua apólice.
-          </div>
-        </div>
-
-        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-          <button onclick="toggleFaq(4)" class="w-full py-4 px-6 text-left flex items-center justify-between font-bold text-slate-900 hover:text-brand-royal transition text-sm">
-            <span>Quantas sessões eu preciso para sentir melhora?</span>
-            <i id="faq-icon-4" data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform"></i>
-          </button>
-          <div id="faq-content-4" class="hidden px-6 pb-5 text-xs text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-            Por se tratar de uma intervenção na causa mecânica do sintoma, na maioria dos casos o alívio já é percebido na primeira sessão. O plano terapêutico padrão varia de 3 a 5 atendimentos com intervalos quinzenais.
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ================= 12. INSTITUTIONAL FOOTER (CREB STYLE) ================= -->
-  <footer class="bg-brand-navy text-slate-400 py-16 border-t border-slate-800 text-xs">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-slate-800">
-        
-        <!-- Col 1: Brand -->
+        <!-- Col 1: Logo CPS -->
         <div class="space-y-4">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-brand-royal text-white font-black text-lg flex items-center justify-center">
-              CPS
-            </div>
-            <div>
-              <p class="text-white font-extrabold text-sm">Centro de Postura e Saúde</p>
-              <p class="text-[10px] text-brand-blue uppercase font-bold">Cuidados Musculoesqueléticos</p>
-            </div>
-          </div>
-          <p class="text-slate-400 text-xs leading-relaxed">
-            Atendimento individualizado focado em devolver mobilidade e liberdade para adultos e tranquilidade para famílias com bebês.
+          <img 
+            src="assets/logo-cps.png" 
+            alt="CPS - Centro de Postura e Saúde" 
+            class="h-12 w-auto object-contain"
+          >
+          <p class="text-slate-500 text-xs leading-relaxed">
+            Centro especializado no tratamento conservador da dor, reabilitação articular e osteopatia pediátrica e adulta.
           </p>
         </div>
 
-        <!-- Col 2: Especialidades -->
+        <!-- Col 2: Serviços -->
         <div class="space-y-3">
-          <p class="text-white font-bold text-xs uppercase tracking-wider">Especialidades</p>
-          <ul class="space-y-2 text-slate-400 text-xs">
-            <li><a href="#especialidades" class="hover:text-white transition">Coluna & Hérnia Discal</a></li>
-            <li><a href="#especialidades" class="hover:text-white transition">Osteopatia Pediátrica</a></li>
-            <li><a href="#especialidades" class="hover:text-white transition">Reabilitação de Joelho (LCA)</a></li>
-            <li><a href="#especialidades" class="hover:text-white transition">Disfunções de ATM & DTM</a></li>
-            <li><a href="#especialidades" class="hover:text-white transition">Conceito Mulligan Oficial</a></li>
+          <p class="text-slate-900 font-bold text-xs uppercase tracking-wider">Serviços</p>
+          <ul class="space-y-2 text-slate-500 text-xs">
+            <li><a href="#servicos" class="hover:text-cps-cyan transition">Coluna & Hérnia de Disco</a></li>
+            <li><a href="#servicos" class="hover:text-cps-cyan transition">Osteopatia Pediátrica</a></li>
+            <li><a href="#servicos" class="hover:text-cps-cyan transition">Conceito Mulligan Oficial</a></li>
+            <li><a href="#servicos" class="hover:text-cps-cyan transition">Reabilitação de Joelho (LCA)</a></li>
           </ul>
         </div>
 
-        <!-- Col 3: Institucional -->
+        <!-- Col 3: Links Rápidos -->
         <div class="space-y-3">
-          <p class="text-white font-bold text-xs uppercase tracking-wider">Institucional</p>
-          <ul class="space-y-2 text-slate-400 text-xs">
-            <li><a href="#corpo-clinico" class="hover:text-white transition">Dr. Israel Silva</a></li>
-            <li><a href="#reembolso" class="hover:text-white transition">Política de Reembolso</a></li>
-            <li><a href="#unidade" class="hover:text-white transition">A Unidade CPS</a></li>
-            <li><a href="#agendamento-online" class="hover:text-white transition">Portal de Agendamento</a></li>
-            <li><a href="https://www.instagram.com/drisraelsilva/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">Instagram @drisraelsilva</a></li>
+          <p class="text-slate-900 font-bold text-xs uppercase tracking-wider">A Clínica</p>
+          <ul class="space-y-2 text-slate-500 text-xs">
+            <li><a href="#nossa-clinica" class="hover:text-cps-cyan transition">Nossa Clínica</a></li>
+            <li><a href="#corpo-clinico" class="hover:text-cps-cyan transition">Dr. Israel Silva</a></li>
+            <li><a href="#agendamento" class="hover:text-cps-cyan transition">Agendamento Online</a></li>
+            <li><a href="https://www.instagram.com/drisraelsilva/" target="_blank" rel="noopener noreferrer" class="hover:text-cps-cyan transition">Instagram Oficial</a></li>
           </ul>
         </div>
 
-        <!-- Col 4: Central de Atendimento -->
+        <!-- Col 4: Horários e Atendimento -->
         <div class="space-y-3">
-          <p class="text-white font-bold text-xs uppercase tracking-wider">Atendimento</p>
-          <p class="text-xs text-slate-300">
-            <strong>Unidade CPS</strong><br>
-            Centro de Postura e Saúde<br>
+          <p class="text-slate-900 font-bold text-xs uppercase tracking-wider">Atendimento</p>
+          <p class="text-slate-600">
+            <strong>Centro de Postura e Saúde</strong><br>
             Segunda a Sexta: 08h às 19h<br>
             Sábados: Sob Agendamento
           </p>
-          <div class="pt-2">
-            <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition">
+          <div class="pt-1">
+            <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-500 transition">
               <i data-lucide="message-circle" class="w-4 h-4"></i>
               <span>WhatsApp da Recepção</span>
             </a>
@@ -1054,7 +622,7 @@
 
       </div>
 
-      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
         <p>© <span id="year"></span> Centro de Postura e Saúde. Todos os direitos reservados.</p>
         <p>Responsável Técnico: Dr. Israel Silva • Fisioterapeuta / Osteopata</p>
       </div>
@@ -1062,64 +630,72 @@
     </div>
   </footer>
 
-  <!-- ================= FLOATING WHATSAPP BUTTON ================= -->
+  <!-- ================= 8. FLOATING WHATSAPP BUTTON (FISIOCLINIC STYLE) ================= -->
   <div class="fixed bottom-6 right-6 z-50">
-    <a href="https://wa.me/5511999999999?text=Olá!%20Gostaria%20de%20solicitar%20um%20agendamento%20no%20CPS." target="_blank" rel="noopener noreferrer" aria-label="Agendar via WhatsApp" class="group flex items-center gap-2.5 bg-emerald-600 hover:bg-emerald-500 text-white p-3.5 sm:px-5 sm:py-3.5 rounded-full shadow-2xl shadow-emerald-950/40 hover:scale-105 transition-all">
-      <i data-lucide="message-circle" class="w-6 h-6 fill-current"></i>
-      <span class="hidden sm:inline font-bold text-xs uppercase tracking-wider">Agendamento WhatsApp</span>
+    <a href="https://wa.me/5511999999999?text=Olá!%20Gostaria%20de%20solicitar%20um%20agendamento%20no%20CPS." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da Clínica" class="flex items-center justify-center w-14 h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-2xl shadow-emerald-600/40 hover:scale-110 transition-all duration-300">
+      <i data-lucide="message-circle" class="w-7 h-7 fill-current"></i>
     </a>
   </div>
 
-  <!-- ================= SUPABASE CPS SCRIPTS & CONTROLLERS ================= -->
+  <!-- ================= 9. SLIDER & SUPABASE CONTROLLERS ================= -->
   <script>
-    // Lucide Icons
+    // Initialize Lucide Icons
     lucide.createIcons();
 
     // Auto set current year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // FAQ Accordion
-    function toggleFaq(id) {
-      const content = document.getElementById(`faq-content-${id}`);
-      const icon = document.getElementById(`faq-icon-${id}`);
-      const isOpen = !content.classList.contains('hidden');
+    /*
+     * HERO SLIDESHOW ANIMATION (Images moving smoothly like Fisioclinic)
+     */
+    let currentSlide = 0;
+    const totalSlides = 3;
 
-      for (let i = 1; i <= 4; i++) {
-        const item = document.getElementById(`faq-content-${i}`);
-        const ic = document.getElementById(`faq-icon-${i}`);
-        if (item) item.classList.add('hidden');
-        if (ic) ic.classList.remove('rotate-180');
+    function setSlide(index) {
+      for (let i = 0; i < totalSlides; i++) {
+        const slide = document.getElementById(`slide-${i}`);
+        const dot = document.getElementById(`dot-${i}`);
+        if (slide) slide.classList.remove('active');
+        if (dot) {
+          dot.classList.remove('scale-125', 'bg-white');
+          dot.classList.add('bg-white/50');
+        }
       }
 
-      if (!isOpen) {
-        content.classList.remove('hidden');
-        icon.classList.add('rotate-180');
+      currentSlide = index;
+      const activeSlide = document.getElementById(`slide-${currentSlide}`);
+      const activeDot = document.getElementById(`dot-${currentSlide}`);
+      if (activeSlide) activeSlide.classList.add('active');
+      if (activeDot) {
+        activeDot.classList.remove('bg-white/50');
+        activeDot.classList.add('scale-125', 'bg-white');
       }
     }
 
+    // Auto advance slide every 5 seconds
+    setInterval(() => {
+      let next = (currentSlide + 1) % totalSlides;
+      setSlide(next);
+    }, 5000);
+
     /*
-     * ========================================================
-     * SUPABASE INTEGRATION - PROJETO: Clinica - CPS
-     * Configurado com as chaves reais fornecidas:
-     * ========================================================
+     * SUPABASE CPS INTEGRATION
      */
     const SUPABASE_CONFIG = {
       url: "https://jkpuddaizubbbwhblbzj.supabase.co",
       anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImprcHVkZGFpenViYmJ3aGJsYnpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMwNTQ1OTgsImV4cCI6MjEwODYzMDU5OH0._L05J5PGuhr-2ud0RlX17C8F_9CPZxoxBgrx7tfxZEU",
-      phone: "5511999999999" // Altere para o WhatsApp real da recepção
+      phone: "5511999999999" // WhatsApp da recepção
     };
 
     let supabaseCPS = null;
     try {
       if (window.supabase) {
         supabaseCPS = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
-        console.log("Supabase Clinica - CPS inicializado com sucesso!");
       }
     } catch (e) {
-      console.warn("Aviso Supabase:", e);
+      console.warn("Supabase aviso:", e);
     }
 
-    // FORM SUBMIT HANDLER
     async function handleCpsBooking(e) {
       e.preventDefault();
 
@@ -1134,12 +710,11 @@
       const feedback = document.getElementById('cps-feedback');
 
       btn.disabled = true;
-      btnText.textContent = "Gravando Dados no Sistema...";
+      btnText.textContent = "Gravando no Sistema...";
 
-      // Grava no banco de dados Supabase da Clinica - CPS
       if (supabaseCPS) {
         try {
-          const { data, error } = await supabaseCPS
+          await supabaseCPS
             .from('agendamentos')
             .insert([
               {
@@ -1151,29 +726,21 @@
                 origem: 'Portal Web CPS'
               }
             ]);
-
-          if (error) {
-            console.error("Nota Supabase (se a tabela ainda não foi criada, veja o arquivo supabase_setup.sql):", error);
-          } else {
-            console.log("Agendamento gravado no banco de dados com sucesso!");
-          }
         } catch (err) {
-          console.warn("Tentativa de gravação Supabase:", err);
+          console.warn("Gravação Supabase:", err);
         }
       }
 
-      // Feedback visual para o paciente
       feedback.classList.remove('hidden');
 
-      // Monta a mensagem personalizada do WhatsApp
       const zapText = encodeURIComponent(
-        `*SOLICITAÇÃO DE AGENDAMENTO - PORTAL CPS*\n\n` +
+        `*SOLICITAÇÃO DE AGENDAMENTO - CPS*\n\n` +
         `• *Paciente:* ${name}\n` +
         `• *Telefone:* ${phone}\n` +
         `• *Especialidade:* ${specialty}\n` +
         `• *Turno Preferido:* ${period}\n` +
         (notes ? `• *Sintoma/Queixa:* ${notes}\n` : '') +
-        `\nAguardo confirmação de horários disponíveis no Centro de Postura e Saúde!`
+        `\nAguardo confirmação de horários no Centro de Postura e Saúde!`
       );
 
       setTimeout(() => {
